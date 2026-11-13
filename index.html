@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PULSE — фитнес-клуб</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #262626;
+    --text: #f5f5f5;
+    --muted: #a3a3a3;
+    --accent: #ccff00;
+    --accent-ink: #0a0a0a;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Manrope", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; height: 48px; padding: 0 24px; border-radius: 999px;
+    font: inherit; font-weight: 700; font-size: 15px; cursor: pointer;
+    border: 1px solid transparent; transition: background .15s, color .15s, border-color .15s;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { background: #b8e600; }
+  .btn-outline { border-color: #ffffff40; color: var(--text); background: transparent; }
+  .btn-outline:hover { border-color: var(--text); }
+  .btn:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* Header */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: #0a0a0acc; backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
+  .logo { font-weight: 800; font-size: 24px; letter-spacing: .08em; display: flex; align-items: center; gap: 8px; }
+  .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .menu { display: flex; gap: 32px; list-style: none; }
+  .menu a { color: var(--muted); font-weight: 500; font-size: 15px; }
+  .menu a:hover { color: var(--text); }
+  .nav .btn { height: 42px; padding: 0 20px; }
+
+  /* Hero */
+  .hero {
+    position: relative; min-height: calc(100svh - 72px);
+    display: flex; align-items: center; padding: 80px 0;
+    background:
+      linear-gradient(90deg, #0a0a0a 0%, #0a0a0ae6 35%, #0a0a0a33 100%),
+      linear-gradient(0deg, #0a0a0a 0%, transparent 30%),
+      url("./img/hero.png") center right / cover no-repeat;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em;
+    color: var(--accent); margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(44px, 8vw, 96px); line-height: .95; font-weight: 800;
+    letter-spacing: -.03em; max-width: 10ch; text-wrap: balance;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { margin-top: 24px; max-width: 46ch; font-size: clamp(16px, 2vw, 19px); color: #d4d4d4; text-wrap: pretty; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+  /* Sections */
+  section { padding: 96px 0; }
+  .section-head { margin-bottom: 48px; max-width: 640px; }
+  .section-head h2 { font-size: clamp(32px, 5vw, 52px); line-height: 1.05; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+  .section-head p { margin-top: 14px; color: var(--muted); font-size: 17px; }
+
+  /* Features */
+  .features { padding: 0; margin-top: -1px; }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    background: var(--surface);
+  }
+  .feature { padding: 32px 28px; border-right: 1px solid var(--border); }
+  .feature:last-child { border-right: 0; }
+  .feature-value { font-size: 40px; font-weight: 800; color: var(--accent); letter-spacing: -.02em; line-height: 1; }
+  .feature h3 { font-size: 17px; font-weight: 700; margin-top: 14px; }
+  .feature p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+  /* Directions */
+  .dir-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .dir {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px; min-height: 200px; display: flex; flex-direction: column; justify-content: space-between;
+    transition: border-color .15s;
+  }
+  .dir:hover { border-color: var(--accent); }
+  .dir-num { font-size: 13px; color: var(--muted); font-weight: 600; letter-spacing: .1em; }
+  .dir h3 { font-size: 24px; font-weight: 700; letter-spacing: -.01em; }
+  .dir p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+  /* Schedule */
+  .schedule { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; font-size: 15px; }
+  th, td { text-align: left; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+  /* Pricing */
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+  .plan {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px; display: flex; flex-direction: column;
+  }
+  .plan.featured { border-color: var(--accent); background: linear-gradient(180deg, #ccff000f, transparent 60%), var(--surface); }
+  .plan-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .plan h3 { font-size: 20px; font-weight: 700; }
+  .badge { background: var(--accent); color: var(--accent-ink); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+  .price { margin-top: 20px; font-size: 44px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .price small { font-size: 16px; color: var(--muted); font-weight: 500; letter-spacing: 0; }
+  .plan ul { list-style: none; margin: 28px 0 32px; display: grid; gap: 12px; flex: 1; }
+  .plan li { display: flex; gap: 10px; color: #d4d4d4; font-size: 15px; }
+  .plan li::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-top: 9px; }
+  .plan .btn { width: 100%; }
+
+  /* Form */
+  .signup-box {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    background: var(--accent); color: var(--accent-ink); border-radius: 24px; padding: 56px;
+  }
+  .signup-box h2 { font-size: clamp(32px, 5vw, 52px); line-height: 1.05; font-weight: 800; letter-spacing: -.02em; }
+  .signup-box > div > p { margin-top: 14px; font-size: 17px; font-weight: 500; opacity: .8; }
+  form { display: grid; gap: 14px; }
+  label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+  input {
+    height: 54px; border-radius: 12px; border: 1px solid #0a0a0a33; background: #ffffff;
+    padding: 0 18px; font: inherit; font-size: 16px; color: #0a0a0a;
+  }
+  input::placeholder { color: #737373; }
+  form .btn { height: 54px; background: var(--accent-ink); color: var(--accent); margin-top: 4px; }
+  form .btn:hover { background: #262626; }
+  form .btn:focus-visible { outline-color: var(--accent-ink); }
+  .form-note { font-size: 13px; opacity: .7; }
+  .form-success { display: none; font-weight: 700; font-size: 18px; padding: 20px; border-radius: 12px; background: #0a0a0a; color: var(--accent); }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 64px 0 32px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
+  .footer-grid h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 600; margin-bottom: 14px; }
+  .footer-grid p, .footer-grid a { display: block; font-size: 15px; color: #d4d4d4; margin-bottom: 6px; }
+  .footer-grid a:hover { color: var(--accent); }
+  .footer-about { color: var(--muted) !important; max-width: 32ch; margin-top: 14px; }
+  .copy { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .feature:nth-child(2) { border-right: 0; }
+    .feature:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+    .dir-grid { grid-template-columns: repeat(2, 1fr); }
+    .price-grid { grid-template-columns: 1fr; max-width: 480px; }
+    .signup-box { grid-template-columns: 1fr; padding: 40px; gap: 32px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .menu { display: none; }
+    section { padding: 72px 0; }
+    .hero { padding: 64px 0; min-height: auto; background:
+      linear-gradient(0deg, #0a0a0a 0%, #0a0a0acc 50%, #0a0a0a66 100%),
+      url("./img/hero.png") 70% center / cover no-repeat; }
+    .hero-actions .btn { flex: 1 1 100%; }
+  }
+  @media (max-width: 520px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .feature { border-right: 0 !important; border-bottom: 1px solid var(--border); }
+    .feature:last-child { border-bottom: 0; }
+    .dir-grid { grid-template-columns: 1fr; }
+    .dir { min-height: 150px; }
+    .signup-box { padding: 28px 20px; border-radius: 20px; }
+    .plan { padding: 24px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .nav .btn { padding: 0 16px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#top" class="logo" aria-label="PULSE — на главную"><span class="logo-dot" aria-hidden="true"></span>PULSE</a>
+    <nav aria-label="Основное меню">
+      <ul class="menu">
+        <li><a href="#directions">Направления</a></li>
+        <li><a href="#schedule">Расписание</a></li>
+        <li><a href="#pricing">Абонементы</a></li>
+      </ul>
+    </nav>
+    <a href="#signup" class="btn btn-primary">Записаться</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="eyebrow">Фитнес-клуб · Открыто 24/7</div>
+      <h1 id="hero-title">Сильнее <span>каждый</span> день</h1>
+      <p>Открытый зал 1200 м² с современным оборудованием, групповые тренировки и персональные программы с тренерами, которые помогут дойти до результата.</p>
+      <div class="hero-actions">
+        <a href="#signup" class="btn btn-primary">Записаться на пробную</a>
+        <a href="#schedule" class="btn btn-outline">Смотреть расписание</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" aria-label="Преимущества">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-value">1200 м²</div>
+          <h3>Открытый зал</h3>
+          <p>Свободные веса, тренажёры и зона функционального тренинга.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-value">18</div>
+          <h3>Тренеров</h3>
+          <p>Сертифицированные специалисты с опытом от 5 лет.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-value">24/7</div>
+          <h3>Работаем круглосуточно</h3>
+          <p>Тренируйтесь тогда, когда удобно именно вам.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-value">40+</div>
+          <h3>Групповых занятий</h3>
+          <p>Каждую неделю — от силовых до растяжки.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="directions" aria-labelledby="dir-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="dir-title">Направления тренировок</h2>
+        <p>Выберите формат под свою цель — от набора силы до восстановления.</p>
+      </div>
+      <div class="dir-grid">
+        <article class="dir"><span class="dir-num">01</span><div><h3>Силовой тренинг</h3><p>Работа со свободными весами и тренажёрами.</p></div></article>
+        <article class="dir"><span class="dir-num">02</span><div><h3>Функциональный</h3><p>Выносливость, координация и сила всего тела.</p></div></article>
+        <article class="dir"><span class="dir-num">03</span><div><h3>Кроссфит</h3><p>Интенсивные круговые тренировки в группе.</p></div></article>
+        <article class="dir"><span class="dir-num">04</span><div><h3>Бокс</h3><p>Техника, скорость и мощная кардионагрузка.</p></div></article>
+        <article class="dir"><span class="dir-num">05</span><div><h3>Йога и стретчинг</h3><p>Гибкость, мобильность и восстановление.</p></div></article>
+        <article class="dir"><span class="dir-num">06</span><div><h3>Персональные тренировки</h3><p>Индивидуальная программа с тренером.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule" class="schedule" aria-labelledby="sch-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="sch-title">Расписание</h2>
+        <p>Групповые занятия на неделю. Открытый зал доступен круглосуточно.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Время</th><th scope="col">Пн / Ср / Пт</th><th scope="col">Вт / Чт</th><th scope="col">Сб / Вс</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>07:00</td><td>Функциональный</td><td>Йога</td><td>—</td></tr>
+            <tr><td>10:00</td><td>Стретчинг</td><td>Силовой тренинг</td><td>Кроссфит</td></tr>
+            <tr><td>12:00</td><td>Бокс</td><td>Функциональный</td><td>Йога</td></tr>
+            <tr><td>19:00</td><td>Кроссфит</td><td>Бокс</td><td>Стретчинг</td></tr>
+            <tr><td>20:30</td><td>Силовой тренинг</td><td>Кроссфит</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" aria-labelledby="price-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="price-title">Абонементы</h2>
+        <p>Без скрытых платежей. Первая пробная тренировка — бесплатно.</p>
+      </div>
+      <div class="price-grid">
+        <article class="plan">
+          <div class="plan-top"><h3>Разовый</h3></div>
+          <div class="price">800 ₽ <small>/ визит</small></div>
+          <ul>
+            <li>Доступ в открытый зал</li>
+            <li>Раздевалка и душ</li>
+            <li>Одно групповое занятие</li>
+          </ul>
+          <a href="#signup" class="btn btn-outline">Выбрать</a>
+        </article>
+        <article class="plan featured">
+          <div class="plan-top"><h3>Месяц</h3><span class="badge">Популярный</span></div>
+          <div class="price">4 900 ₽ <small>/ месяц</small></div>
+          <ul>
+            <li>Безлимитный доступ 24/7</li>
+            <li>Все групповые занятия</li>
+            <li>Вводная тренировка с тренером</li>
+            <li>Заморозка до 7 дней</li>
+          </ul>
+          <a href="#signup" class="btn btn-primary">Выбрать</a>
+        </article>
+        <article class="plan">
+          <div class="plan-top"><h3>Год</h3></div>
+          <div class="price">39 900 ₽ <small>/ год</small></div>
+          <ul>
+            <li>Всё из тарифа «Месяц»</li>
+            <li>4 персональные тренировки</li>
+            <li>Заморозка до 60 дней</li>
+            <li>Экономия 32%</li>
+          </ul>
+          <a href="#signup" class="btn btn-outline">Выбрать</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="signup" aria-labelledby="form-title">
+    <div class="container">
+      <div class="signup-box">
+        <div>
+          <h2 id="form-title">Запишитесь на пробную тренировку</h2>
+          <p>Оставьте контакты — менеджер перезвонит в течение 15 минут и подберёт удобное время.</p>
+        </div>
+        <div>
+          <form id="signup-form" novalidate>
+            <label>Имя
+              <input type="text" name="name" placeholder="Как к вам обращаться" autocomplete="name" required>
+            </label>
+            <label>Телефон
+              <input type="tel" name="phone" placeholder="+7 (900) 000-00-00" autocomplete="tel" inputmode="tel" required>
+            </label>
+            <button type="submit" class="btn">Отправить</button>
+            <p class="form-note">Нажимая «Отправить», вы соглашаетесь на обработку персональных данных.</p>
+          </form>
+          <div class="form-success" id="form-success" role="status" aria-live="polite">Спасибо! Мы скоро свяжемся с вами.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#top" class="logo"><span class="logo-dot" aria-hidden="true"></span>PULSE</a>
+        <p class="footer-about">Фитнес-клуб для тех, кто становится сильнее каждый день.</p>
+      </div>
+      <div>
+        <h4>Адрес</h4>
+        <p>Москва, ул. Спортивная, 12</p>
+        <p>м. Спортивная, 3 мин пешком</p>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <a href="tel:+74950000000">+7 (495) 000-00-00</a>
+        <a href="mailto:hello@pulse.fit">hello@pulse.fit</a>
+      </div>
+      <div>
+        <h4>Режим работы</h4>
+        <p>Ежедневно, 24/7</p>
+        <p>Групповые: 07:00–22:00</p>
+      </div>
+    </div>
+    <div class="copy"><span>© 2026 PULSE. Все права защищены.</span><span>Политика конфиденциальности</span></div>
+  </div>
+</footer>
+
+<script>
+  const form = document.getElementById('signup-form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const phone = form.phone.value.replace(/\D/g, '');
+    form.name.setAttribute('aria-invalid', String(!name));
+    form.phone.setAttribute('aria-invalid', String(phone.length < 10));
+    if (!name) return form.name.focus();
+    if (phone.length < 10) return form.phone.focus();
+    form.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  });
+</script>
+</body>
+</html>
